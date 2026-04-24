@@ -12,7 +12,7 @@ import json
 import os
 
 MODEL_PATH = "crash_ai_model.joblib"
-CSV_PATH = "TRAIN-666.CSV"
+CSV_PATH = "TRAIN-666.csv"
 
 
 def extract_time_features(timestamp_str: str) -> tuple:

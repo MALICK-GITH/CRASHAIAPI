@@ -28,7 +28,7 @@ app.add_middleware(
 )
 
 MODEL_PATH = "crash_ai_model.joblib"
-CSV_PATH = "TRAIN-666.CSV"
+CSV_PATH = "TRAIN-666.csv"
 
 
 class PredictionRequest(BaseModel):
