@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+
+# Data files - DO NOT COMMIT
+*.csv
+*.xlsx
+*.json
+
+# Model files - Keep only trained model
+# crash_ai_model.joblib is needed for production
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

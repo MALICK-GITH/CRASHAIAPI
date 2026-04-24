@@ -133,6 +133,11 @@
             <p>Ce projet est une IA statistique d'aide à l'analyse uniquement. Il ne doit jamais promettre une prédiction garantie ou un gain certain. Les jeux de hasard comportent des risques importants.</p>
         </div>
 
+        <div class="warning" style="background: #e3f2fd; border-left-color: #2196f3;">
+            <div class="warning-title" style="color: #0d47a1;">🔒 Sécurité en Production</div>
+            <p>L'endpoint /train est protégé par une clé API. Les données d'entraînement ne sont pas exposées publiquement. Le modèle est chargé au démarrage pour des performances optimales.</p>
+        </div>
+
         <h2 style="color: #667eea; margin: 30px 0 20px 0;">📡 Endpoints API</h2>
 
         <div class="endpoint">
@@ -153,9 +158,10 @@
         <div class="endpoint">
             <span class="method post">POST</span>
             <span class="path">/train</span>
-            <span class="badge">Training</span>
-            <p class="description">Entraîner le modèle sur les données du CSV</p>
-            <div class="code-block">curl -X POST https://crashaiapi.onrender.com/train</div>
+            <span class="badge">Training (Protected)</span>
+            <p class="description">Entraîner le modèle sur les données du CSV - Nécessite une clé API</p>
+            <div class="code-block">curl -X POST https://crashaiapi.onrender.com/train \
+  -H "X-API-KEY: YOUR_SECRET_KEY"</div>
             <div class="response">
                 <div class="response-title">Réponse:</div>
                 <pre>{
@@ -191,27 +197,6 @@
   "prediction": 1,
   "confidence": 0.85,
   "signal": "ENTRÉE PRUDENTE"
-}</pre>
-            </div>
-        </div>
-
-        <div class="endpoint">
-            <span class="method post">POST</span>
-            <span class="path">/predict-batch</span>
-            <span class="badge">Batch</span>
-            <p class="description">Faire des prédictions automatiques sur tout le CSV</p>
-            <div class="code-block">curl -X POST https://crashaiapi.onrender.com/predict-batch</div>
-            <div class="response">
-                <div class="response-title">Réponse:</div>
-                <pre>{
-  "total_predictions": 122,
-  "statistics": {
-    "ENTRÉE PRUDENTE": 51,
-    "ENTRÉE TRÈS PRUDENTE": 10,
-    "ATTENDRE": 61
-  },
-  "average_confidence": 0.7878,
-  "predictions": [...]
 }</pre>
             </div>
         </div>

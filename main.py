@@ -3,7 +3,7 @@ Crash AI API - Signé SOLITAIRE HACK 🇨🇮
 IA statistique d'aide à l'analyse du jeu Crash
 """
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -31,6 +31,15 @@ app.add_middleware(
 
 MODEL_PATH = "crash_ai_model.joblib"
 CSV_PATH = "TRAIN-666.csv"
+API_KEY = os.getenv("API_KEY", "SOLITAIRE-HACK-SECRET-KEY-2026")
+
+# Load model at startup
+model = None
+if os.path.exists(MODEL_PATH):
+    model = joblib.load(MODEL_PATH)
+    print("✅ Model loaded successfully at startup")
+else:
+    print("⚠️ Model file not found. Please train the model first.")
 
 
 class PredictionRequest(BaseModel):
@@ -146,11 +155,6 @@ def train_model():
     return len(df), accuracy
 
 
-def load_model():
-    """Load trained model from disk"""
-    if not os.path.exists(MODEL_PATH):
-        return None
-    return joblib.load(MODEL_PATH)
 
 
 @app.get("/")
@@ -163,8 +167,12 @@ def root():
 
 
 @app.post("/train")
-def train_endpoint():
-    """Train the model on CSV data"""
+def train_endpoint(x_api_key: Optional[str] = Header(None)):
+    """Train the model on CSV data - PROTECTED with API KEY"""
+    # Verify API key
+    if x_api_key != API_KEY:
+        raise HTTPException(status_code=403, detail="Invalid or missing API key")
+    
     try:
         rows_used, accuracy = train_model()
         return {
@@ -184,12 +192,12 @@ def train_endpoint():
 @app.post("/predict")
 def predict_endpoint(request: PredictionRequest):
     """Make prediction using trained model"""
-    model = load_model()
+    global model
     
     if model is None:
         raise HTTPException(
-            status_code=400,
-            detail="Model not trained yet. Call /train first."
+            status_code=503,
+            detail="Model not loaded. Please contact administrator."
         )
     
     try:
@@ -228,68 +236,6 @@ def predict_endpoint(request: PredictionRequest):
         raise HTTPException(status_code=500, detail=f"Prediction error: {str(e)}")
 
 
-@app.post("/predict-batch")
-def predict_batch_endpoint():
-    """Make predictions on all valid rows in CSV"""
-    model = load_model()
-    
-    if model is None:
-        raise HTTPException(
-            status_code=400,
-            detail="Model not trained yet. Call /train first."
-        )
-    
-    if not os.path.exists(CSV_PATH):
-        raise HTTPException(status_code=404, detail=f"CSV file not found: {CSV_PATH}")
-    
-    try:
-        # Read and prepare data
-        df = pd.read_csv(CSV_PATH)
-        df = prepare_features(df)
-        
-        # Define features
-        feature_cols = ["hour", "minute", "second", "prev_1", "prev_2", "prev_3", 
-                        "avg_5", "low_count_5", "high_count_10"]
-        X = df[feature_cols]
-        
-        # Make predictions
-        predictions = model.predict(X)
-        probabilities = model.predict_proba(X)
-        confidences = np.max(probabilities, axis=1)
-        
-        # Generate signals
-        def get_signal(pred, conf):
-            if pred == 1 and conf >= 0.7:
-                return "ENTRÉE PRUDENTE"
-            elif pred == 1 and conf < 0.7:
-                return "ENTRÉE TRÈS PRUDENTE"
-            else:
-                return "ATTENDRE"
-        
-        # Build results
-        results = []
-        for i in range(len(df)):
-            results.append({
-                "timestamp_iso": df.iloc[i]["timestamp_iso"],
-                "value": float(df.iloc[i]["value"]),
-                "prediction": int(predictions[i]),
-                "confidence": round(float(confidences[i]), 4),
-                "signal": get_signal(predictions[i], confidences[i])
-            })
-        
-        # Statistics
-        signal_counts = {"ENTRÉE PRUDENTE": 0, "ENTRÉE TRÈS PRUDENTE": 0, "ATTENDRE": 0}
-        for r in results:
-            signal_counts[r["signal"]] += 1
-        
-        return {
-            "total_predictions": len(results),
-            "statistics": signal_counts,
-            "average_confidence": round(float(np.mean(confidences)), 4),
-            "predictions": results
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Batch prediction error: {str(e)}")
 
 
 @app.get("/documentation")
