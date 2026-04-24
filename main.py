@@ -292,7 +292,7 @@ def predict_batch_endpoint():
         raise HTTPException(status_code=500, detail=f"Batch prediction error: {str(e)}")
 
 
-@app.get("/docs")
+@app.get("/documentation")
 def serve_docs():
     """Serve HTML documentation page"""
     return FileResponse("index.html")
