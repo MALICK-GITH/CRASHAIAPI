@@ -5,6 +5,8 @@ IA statistique d'aide à l'analyse du jeu Crash
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import pandas as pd
 import numpy as np
@@ -288,6 +290,12 @@ def predict_batch_endpoint():
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Batch prediction error: {str(e)}")
+
+
+@app.get("/docs")
+def serve_docs():
+    """Serve HTML documentation page"""
+    return FileResponse("index.html")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crash AI API - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        .endpoint {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        .endpoint:hover {
+            transform: translateX(5px);
+        }
+        .method {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-right: 10px;
+        }
+        .get {
+            background: #28a745;
+            color: white;
+        }
+        .post {
+            background: #007bff;
+            color: white;
+        }
+        .path {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            color: #333;
+            font-weight: bold;
+        }
+        .description {
+            color: #666;
+            margin: 10px 0;
+        }
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .response {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .response-title {
+            font-weight: bold;
+            color: #2e7d32;
+            margin-bottom: 5px;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .warning-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 5px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #666;
+            font-size: 0.9em;
+        }
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Crash AI API</h1>
+        <p class="subtitle">Signé SOLITAIRE HACK 🇨🇮 | IA statistique d'aide à l'analyse du jeu Crash</p>
+        
+        <div class="warning">
+            <div class="warning-title">⚠️ Avertissement Important</div>
+            <p>Ce projet est une IA statistique d'aide à l'analyse uniquement. Il ne doit jamais promettre une prédiction garantie ou un gain certain. Les jeux de hasard comportent des risques importants.</p>
+        </div>
+
+        <h2 style="color: #667eea; margin: 30px 0 20px 0;">📡 Endpoints API</h2>
+
+        <div class="endpoint">
+            <span class="method get">GET</span>
+            <span class="path">/</span>
+            <span class="badge">Status</span>
+            <p class="description">Vérifier si l'API est en ligne</p>
+            <div class="code-block">curl https://crashaiapi.onrender.com/</div>
+            <div class="response">
+                <div class="response-title">Réponse:</div>
+                <pre>{
+  "status": "Crash AI API running",
+  "project": "SOLITAIRE HACK 🇨🇮"
+}</pre>
+            </div>
+        </div>
+
+        <div class="endpoint">
+            <span class="method post">POST</span>
+            <span class="path">/train</span>
+            <span class="badge">Training</span>
+            <p class="description">Entraîner le modèle sur les données du CSV</p>
+            <div class="code-block">curl -X POST https://crashaiapi.onrender.com/train</div>
+            <div class="response">
+                <div class="response-title">Réponse:</div>
+                <pre>{
+  "status": "training_completed",
+  "rows_used": 122,
+  "model_file": "crash_ai_model.joblib",
+  "accuracy": 0.56
+}</pre>
+            </div>
+        </div>
+
+        <div class="endpoint">
+            <span class="method post">POST</span>
+            <span class="path">/predict</span>
+            <span class="badge">Prediction</span>
+            <p class="description">Faire une prédiction basée sur les features fournies</p>
+            <div class="code-block">curl -X POST https://crashaiapi.onrender.com/predict \
+  -H "Content-Type: application/json" \
+  -d '{
+    "hour": 4,
+    "minute": 49,
+    "second": 12,
+    "prev_1": 5.33,
+    "prev_2": 1.42,
+    "prev_3": 2.31,
+    "avg_5": 2.13,
+    "low_count_5": 2,
+    "high_count_10": 1
+  }'</div>
+            <div class="response">
+                <div class="response-title">Réponse:</div>
+                <pre>{
+  "prediction": 1,
+  "confidence": 0.85,
+  "signal": "ENTRÉE PRUDENTE"
+}</pre>
+            </div>
+        </div>
+
+        <div class="endpoint">
+            <span class="method post">POST</span>
+            <span class="path">/predict-batch</span>
+            <span class="badge">Batch</span>
+            <p class="description">Faire des prédictions automatiques sur tout le CSV</p>
+            <div class="code-block">curl -X POST https://crashaiapi.onrender.com/predict-batch</div>
+            <div class="response">
+                <div class="response-title">Réponse:</div>
+                <pre>{
+  "total_predictions": 122,
+  "statistics": {
+    "ENTRÉE PRUDENTE": 51,
+    "ENTRÉE TRÈS PRUDENTE": 10,
+    "ATTENDRE": 61
+  },
+  "average_confidence": 0.7878,
+  "predictions": [...]
+}</pre>
+            </div>
+        </div>
+
+        <h2 style="color: #667eea; margin: 30px 0 20px 0;">🧠 Features Utilisées</h2>
+        <div class="endpoint">
+            <ul style="margin-left: 20px; color: #666;">
+                <li><strong>hour</strong>: Heure du timestamp</li>
+                <li><strong>minute</strong>: Minute du timestamp</li>
+                <li><strong>second</strong>: Seconde du timestamp</li>
+                <li><strong>prev_1</strong>: Valeur du round précédent</li>
+                <li><strong>prev_2</strong>: Valeur 2 rounds avant</li>
+                <li><strong>prev_3</strong>: Valeur 3 rounds avant</li>
+                <li><strong>avg_5</strong>: Moyenne des 5 derniers rounds</li>
+                <li><strong>low_count_5</strong>: Nombre de valeurs &lt; 2.0 dans les 5 derniers rounds</li>
+                <li><strong>high_count_10</strong>: Nombre de valeurs &gt;= 2.0 dans les 10 derniers rounds</li>
+            </ul>
+        </div>
+
+        <h2 style="color: #667eea; margin: 30px 0 20px 0;">🎯 Signaux</h2>
+        <div class="endpoint">
+            <ul style="margin-left: 20px; color: #666;">
+                <li><strong>ENTRÉE PRUDENTE</strong>: Prediction = 1 et confidence &gt;= 0.7</li>
+                <li><strong>ENTRÉE TRÈS PRUDENTE</strong>: Prediction = 1 et confidence &lt; 0.7</li>
+                <li><strong>ATTENDRE</strong>: Prediction = 0</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>Crash AI API - Signé SOLITAIRE HACK 🇨🇮</p>
+            <p>Déployé sur Render: https://crashaiapi.onrender.com</p>
+        </div>
+    </div>
+</body>
+</html>
